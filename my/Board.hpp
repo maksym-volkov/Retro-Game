@@ -10,22 +10,44 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEST_H
-# define TEST_H
+#ifndef BOARD_H
+# define BOARD_H
 # include <iostream>
 # include <cstdlib>
 # include <ncurses.h>
+# include <unistd.h>
+# include "Weapon.hpp"
+# include <cstdint>
+# include <string>
+# include <curses.h>
+# include <sys/ioctl.h>
 
-class Test {
+class Board {
 
 public:
-	Test(void);
+	typedef struct
+	{
+		uint x;
+		uint y;
+	}		vec2ui;
 
-	~Test(void);
+	typedef struct
+	{
+		int x;
+		int y;
+	}		vec2i;
 
+	Board(void);
+
+	~Board(void);
+
+	void run();
+
+	int		init_status;
 private:
 	std::string name,
 				type;
+	WINDOW*		wnd;
 };
 
 #endif

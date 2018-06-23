@@ -10,14 +10,31 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Board.hpp"
+#include "Weapon.hpp"
 
-int		main(void)
+Weapon::Weapon(void)
 {
-	Board board;
+	this->exist = false;
+	this->dispChar = '|';
+	return ;
+}
 
-    if(board.init_status == 0)
-        board.run();
+Weapon::~Weapon(void)
+{
+	return ;
+}
 
-	return (0);
+Weapon::Weapon(Weapon const & src)
+{
+	this->x = src.x;
+	this->y = src.y;
+	this->dispChar = src.dispChar;
+}
+
+Weapon & Weapon::operator=(Weapon const & rhs)
+{
+	this->x = rhs.x;
+	this->y = rhs.y;
+	this->dispChar = rhs.dispChar;
+	return (*this);
 }

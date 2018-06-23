@@ -10,14 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Test.hpp"
+#ifndef WEAPON_H
+# define WEAPON_H
+# include "Board.hpp"
 
-Test::Test(void)
+class Weapon
 {
-	return ;
-}
+	public:
+		Weapon();
+		Weapon(Weapon const & src);
+		~Weapon();
+		Weapon & operator=(Weapon const & rhs);
+		int		x;
+		int		y;
+		char	dispChar;
+		bool	exist;
+};
 
-Test::~Test(void)
-{
-	return ;
-}
+#endif

@@ -1,10 +1,10 @@
 NAME     := test
 
-SRCS     := main.cpp Test.cpp
+SRCS     := main.cpp Board.cpp Weapon.cpp
 OBJS     := $(SRCS:.cpp=.o)
 
 G     	 := g++
-FLAGS 	 := -Wall -Werror -Wextra
+FLAGS 	 := -Wall -Wextra
 LNFLAGS  := -lncurses
 
 DOG  = "[49m              [38;5;179m▄▄\n"\
