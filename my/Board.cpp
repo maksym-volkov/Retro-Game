@@ -20,15 +20,20 @@
 
 Board::Board(void)
 {
-	this->wnd = initscr();
+	this->main_win = initscr();
     cbreak();
     noecho();
     clear();
     refresh();
 
-    keypad(wnd, true);
+    game_win = newwin(18, 78, 1, 1);
+    main_win = newwin(24, 80, 0, 0);
 
-    nodelay(wnd, true);
+    keypad(main_win, true);
+    keypad(game_win, true);
+
+    nodelay(main_win, true);
+    nodelay(game_win, true);
 
     curs_set(0);
 
@@ -41,10 +46,11 @@ Board::Board(void)
     start_color();
 
     attron(A_BOLD);
-    box(wnd, 0, 0);
+    box(main_win, 0, 0);
     attroff(A_BOLD);
 
     this->init_status = 0;
+    this->game_over = false;
 }
 
 Board::~Board(void)
@@ -54,18 +60,29 @@ Board::~Board(void)
 
 void Board::run()
 {
-	struct winsize size;
+    ObjectField stars;
+    ObjectField asteroids;
+    int weaponCount = 0;
+    int starsCount = 0;
 	int in_char;
+
+    wattron(main_win, A_BOLD);
+    box(main_win, 0, 0);
+    wattroff(main_win, A_BOLD);
+    wmove(main_win, 19, 1);
+    whline(main_win, '-', 78);
+
+    wrefresh(game_win);
+    wrefresh(main_win);
     Player player;
 	Weapon weapon[15];
     bool exit_requested = false;
-    // printf("%d rows, %d columns\n", size.ws_row, size.ws_col);
-
-    while(1)
+    while(!game_over)
     {
-		in_char = wgetch(wnd);
+		in_char = wgetch(main_win);
+        werase(game_win);
 
-		// mvaddch(player.y, player.x, ' ');
+		mvaddch(player.y, player.x, ' ');
 
 		switch(in_char) {
             case 'q':
@@ -73,66 +90,77 @@ void Board::run()
                 break;
             case KEY_UP:
             case 'w':
-                if (player.y > 10)
+                if (player.y > 1)
                     player.y -= 1;
                 break;
             case KEY_DOWN:
             case 's':
-                if (player.y < size.ws_row)
+                if (player.y < 18)
                     player.y += 1;
                 break;
             case KEY_LEFT:
             case 'a':
-                if (player.x > 0)
+                if (player.x > 1)
                     player.x -= 1;
                 break;
             case KEY_RIGHT:
             case 'd':
-                if (player.x < size.ws_col)
+                if (player.x < 78)
                     player.x += 1;
                 break;
             case ' ':
             {
             	for (int cur = 0; cur < 15; cur++)
-            	{
-            		if (weapon[cur].exist == false)
-            		{
-                        // printf("%i\n", cur);
-            			weapon[cur].exist = true;
-            			weapon[cur].x = player.x;
-            			weapon[cur].y = player.y - 1;
-            			break ;
-            		}
-            		// break ;
-            	}
+                {
+                    if (weapon[cur].exist == false)
+                    {
+                        weapon[cur].exist = true;
+                        weapon[cur].x = player.x;
+                        weapon[cur].y = player.y - 1;
+                        break ;
+                    }
+                }
             }
             default:
                 break;
         }
-        clear();
-        // printf("%i %i\n", size.ws_row, size.ws_col);
-        mvaddch(player.y, player.x, player.dispChar);
-        // mvprintw(10, 10, (char*)size.ws_row);
-        // clear();
-        refresh();
-        // mvprintw(player.y, player.x, "%C", L'2d1ffff');
-        for (int cur = 0; cur < 15; cur++)
-        {
-            if (weapon[cur].exist == true)
-            {
-            	weapon[cur].y -= 1;
-            	mvaddch(weapon[cur].y, weapon[cur].x, weapon[cur].dispChar);
-            }
-            if (weapon[cur].exist == true && weapon[cur].y < 0)
-            {
-            	weapon[cur].exist = false;
-            }
+        player.display();
+
+        SpaceObject* s1 = stars.getData();
+        SpaceObject* s2 = asteroids.getData();
+        if (starsCount > 100 && starsCount % 7 == 0)
+            stars.update();
+        for(int i = 0; i < 18; i++) {
+
+            mvwaddch(game_win, s1[i].getPos().y, s1[i].getPos().x, '.');
+        }
+        if (starsCount > 100 && starsCount % 18 == 0)
+            asteroids.update();
+        for(int i = 0; i < 18; i++) {
+
+            mvwaddch(game_win, s2[i].getPos().y, s2[i].getPos().x, '*');
+            if (s2[i].getPos().y == player.y && s2[i].getPos().x == player.x)
+                game_over = true;
         }
         refresh();
+        for (int cur = 0; cur < 15; cur++)
+            weapon[cur].clean();
+        if (weaponCount % 5 == 0)
+        {
+            for (int cur = 0; cur < 15; cur++)
+                weapon[cur].update();
+            weaponCount = 0;
+        }
+        for (int cur = 0; cur < 15; cur++)
+            if (weapon[cur].exist == true)
+                weapon[cur].drow();
 
         if(exit_requested) break;
-
+        weaponCount += 1;
+        starsCount += 1;
         usleep(10000);
+        wrefresh(main_win);
+        wrefresh(game_win);
         refresh();
     }
 }

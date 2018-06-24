@@ -13,6 +13,7 @@
 #ifndef WEAPON_H
 # define WEAPON_H
 # include "Board.hpp"
+# include "Player.hpp"
 
 class Weapon
 {
@@ -21,6 +22,10 @@ class Weapon
 		Weapon(Weapon const & src);
 		~Weapon();
 		Weapon & operator=(Weapon const & rhs);
+		// int		add(Player &player);
+		void	clean(void);
+		void	drow(void);
+		void	update(void);
 		int		x;
 		int		y;
 		char	dispChar;

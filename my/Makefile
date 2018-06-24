@@ -1,6 +1,6 @@
 NAME     := test
 
-SRCS     := main.cpp Board.cpp Weapon.cpp Player.cpp
+SRCS     := main.cpp Board.cpp Weapon.cpp Player.cpp Enemies.cpp
 OBJS     := $(SRCS:.cpp=.o)
 
 G     	 := g++

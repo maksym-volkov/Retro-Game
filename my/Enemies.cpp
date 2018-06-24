@@ -10,36 +10,31 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BOARD_H
-# define BOARD_H
-# include <iostream>
-# include <cstdlib>
-# include <ncurses.h>
-# include <unistd.h>
-# include "Weapon.hpp"
-# include "Player.hpp"
-# include "Enemies.hpp"
-# include <cstdint>
-# include <string>
-# include <curses.h>
-# include <sys/ioctl.h>
+#include "Enemies.hpp"
 
-class Board {
+ObjectField::ObjectField(void) {
 
-public:
+	obj = new SpaceObject[22];
+}
+void ObjectField::update() {
+    // update existing objects
+    srand(time(0) + clock());
+    for(size_t i = 0; i < 22; i++) {
+        if(obj[i].getPos().y > 22)
+        {
+        	vec2i p = {1, rand() % 80 + 1};
+            obj[i].setPos(p);
+        }
+        obj[i].update();
+    } 
+}
 
-	Board(void);
+SpaceObject* ObjectField::getData() const  { return obj; }
 
-	~Board(void);
+SpaceObject::SpaceObject(void) { pos.x = rand() % 80 + 1; pos.y = rand() % 21 + 1; }
 
-	void run();
+void SpaceObject::update() { pos.y += 1; }
 
-	int		init_status;
+vec2i SpaceObject::getPos() const { return pos; }
 
-	bool	game_over;
-private:
-	WINDOW *	main_win;
-	WINDOW *	game_win;
-};
-
-#endif
+void SpaceObject::setPos(vec2i np) { pos = np; }

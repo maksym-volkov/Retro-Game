@@ -38,3 +38,25 @@ Weapon & Weapon::operator=(Weapon const & rhs)
 	this->dispChar = rhs.dispChar;
 	return (*this);
 }
+
+void	Weapon::clean(void)
+{
+	mvaddch(this->y, this->x, ' ');
+}
+
+void	Weapon::drow(void)
+{
+	mvaddch(this->y, this->x, this->dispChar);
+}
+
+void	Weapon::update(void)
+{
+    if (this->exist == true)
+    {
+        this->y -= 1;
+    }
+    if (this->exist == true && this->y < 2)
+    {
+        this->exist = false;
+    }
+}

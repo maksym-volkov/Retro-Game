@@ -15,8 +15,8 @@
 Player::Player(void)
 {
 	this->dispChar = '0';
-	this->x = 0;
-	this->y = 0;
+	this->x = 10;
+	this->y = 18;
 	return ;
 }
 
@@ -38,4 +38,9 @@ Player & Player::operator=(Player const & rhs)
 	this->y = rhs.y;
 	this->dispChar = rhs.dispChar;
 	return (*this);
+}
+
+void	Player::display(void)
+{
+	mvaddch(this->y, this->x, this->dispChar);
 }

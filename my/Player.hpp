@@ -13,6 +13,7 @@
 #ifndef PLAYER_H
 # define PLAYER_H
 # include "Board.hpp"
+# include "Weapon.hpp"
 
 class Player
 {
@@ -21,6 +22,7 @@ class Player
 		Player(Player const & src);
 		~Player();
 		Player & operator=(Player const & rhs);
+		void	display(void);
 		int		x;
 		int		y;
 		char	dispChar;
