@@ -82,7 +82,7 @@ void Board::run()
 		in_char = wgetch(main_win);
         werase(game_win);
 
-		mvaddch(player.y, player.x, ' ');
+		// mvaddch(player.y, player.x, ' ');
 
 		switch(in_char) {
             case 'q':
@@ -125,6 +125,7 @@ void Board::run()
                 break;
         }
         player.display();
+        refresh();
 
         SpaceObject* s1 = stars.getData();
         SpaceObject* s2 = asteroids.getData();
@@ -139,8 +140,18 @@ void Board::run()
         for(int i = 0; i < 18; i++) {
 
             mvwaddch(game_win, s2[i].getPos().y, s2[i].getPos().x, '*');
-            if (s2[i].getPos().y == player.y && s2[i].getPos().x == player.x)
+            if (s2[i].getPos().y == player.y - 1 && s2[i].getPos().x == player.x - 1)
                 game_over = true;
+            for (int cur = 0; cur < 15; cur++)
+            {
+                if (weapon[cur].exist && weapon[cur].y - 1 == s2[i].getPos().y && weapon[cur].x - 1 == s2[i].getPos().x)
+                {
+                    vec2i a = {-1, rand() % 78};
+                    s2[i].setPos(a);
+                    weapon[cur].exist = false;
+                    continue ;
+                }
+            }
         }
         refresh();
         for (int cur = 0; cur < 15; cur++)
