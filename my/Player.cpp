@@ -10,45 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BOARD_H
-# define BOARD_H
-# include <iostream>
-# include <cstdlib>
-# include <ncurses.h>
-# include <unistd.h>
-# include "Weapon.hpp"
-# include "Player.hpp"
-# include <cstdint>
-# include <string>
-# include <curses.h>
-# include <sys/ioctl.h>
+#include "Player.hpp"
 
-class Board {
+Player::Player(void)
+{
+	this->dispChar = '0';
+	this->x = 0;
+	this->y = 0;
+	return ;
+}
 
-public:
-	typedef struct
-	{
-		uint x;
-		uint y;
-	}		vec2ui;
+Player::~Player(void)
+{
+	return ;
+}
 
-	typedef struct
-	{
-		int x;
-		int y;
-	}		vec2i;
+Player::Player(Player const & src)
+{
+	this->x = src.x;
+	this->y = src.y;
+	this->dispChar = src.dispChar;
+}
 
-	Board(void);
-
-	~Board(void);
-
-	void run();
-
-	int		init_status;
-private:
-	std::string name,
-				type;
-	WINDOW*		wnd;
-};
-
-#endif
+Player & Player::operator=(Player const & rhs)
+{
+	this->x = rhs.x;
+	this->y = rhs.y;
+	this->dispChar = rhs.dispChar;
+	return (*this);
+}

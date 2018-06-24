@@ -12,11 +12,11 @@
 
 #include "Board.hpp"
 
-struct
-{
-    Board::vec2i pos;
-    char disp_char;
-}   player;
+// struct
+// {
+//     Board::vec2i;
+//     char disp_char;
+// }   player;
 
 Board::Board(void)
 {
@@ -56,15 +56,16 @@ void Board::run()
 {
 	struct winsize size;
 	int in_char;
+    Player player;
 	Weapon weapon[15];
     bool exit_requested = false;
-    player.disp_char = '0';
     // printf("%d rows, %d columns\n", size.ws_row, size.ws_col);
 
-    while(1) {
+    while(1)
+    {
 		in_char = wgetch(wnd);
 
-		mvaddch(player.pos.y, player.pos.x, ' ');
+		// mvaddch(player.y, player.x, ' ');
 
 		switch(in_char) {
             case 'q':
@@ -72,19 +73,23 @@ void Board::run()
                 break;
             case KEY_UP:
             case 'w':
-                player.pos.y -= 1;
+                if (player.y > 10)
+                    player.y -= 1;
                 break;
             case KEY_DOWN:
             case 's':
-                player.pos.y += 1;
+                if (player.y < size.ws_row)
+                    player.y += 1;
                 break;
             case KEY_LEFT:
             case 'a':
-                player.pos.x -= 1;
+                if (player.x > 0)
+                    player.x -= 1;
                 break;
             case KEY_RIGHT:
             case 'd':
-                player.pos.x += 1;
+                if (player.x < size.ws_col)
+                    player.x += 1;
                 break;
             case ' ':
             {
@@ -92,20 +97,25 @@ void Board::run()
             	{
             		if (weapon[cur].exist == false)
             		{
+                        // printf("%i\n", cur);
             			weapon[cur].exist = true;
-            			weapon[cur].x = player.pos.x;
-            			weapon[cur].y = player.pos.y;
+            			weapon[cur].x = player.x;
+            			weapon[cur].y = player.y - 1;
             			break ;
             		}
-            		break ;
+            		// break ;
             	}
             }
             default:
                 break;
         }
         clear();
-        mvaddch(player.pos.y, player.pos.x, player.disp_char);
-
+        // printf("%i %i\n", size.ws_row, size.ws_col);
+        mvaddch(player.y, player.x, player.dispChar);
+        // mvprintw(10, 10, (char*)size.ws_row);
+        // clear();
+        refresh();
+        // mvprintw(player.y, player.x, "%C", L'2d1ffff');
         for (int cur = 0; cur < 15; cur++)
         {
             if (weapon[cur].exist == true)
@@ -122,6 +132,7 @@ void Board::run()
 
         if(exit_requested) break;
 
-        usleep(1000);
+        usleep(10000);
+        refresh();
     }
 }

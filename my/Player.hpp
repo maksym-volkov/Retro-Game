@@ -10,45 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BOARD_H
-# define BOARD_H
-# include <iostream>
-# include <cstdlib>
-# include <ncurses.h>
-# include <unistd.h>
-# include "Weapon.hpp"
-# include "Player.hpp"
-# include <cstdint>
-# include <string>
-# include <curses.h>
-# include <sys/ioctl.h>
+#ifndef PLAYER_H
+# define PLAYER_H
+# include "Board.hpp"
 
-class Board {
-
-public:
-	typedef struct
-	{
-		uint x;
-		uint y;
-	}		vec2ui;
-
-	typedef struct
-	{
-		int x;
-		int y;
-	}		vec2i;
-
-	Board(void);
-
-	~Board(void);
-
-	void run();
-
-	int		init_status;
-private:
-	std::string name,
-				type;
-	WINDOW*		wnd;
+class Player
+{
+	public:
+		Player();
+		Player(Player const & src);
+		~Player();
+		Player & operator=(Player const & rhs);
+		int		x;
+		int		y;
+		char	dispChar;
 };
 
 #endif
