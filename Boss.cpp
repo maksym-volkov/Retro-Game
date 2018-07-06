@@ -10,37 +10,67 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Player.hpp"
+#include "Boss.hpp"
 
-Player::Player(void)
+Boss::Boss(void)
 {
-	this->dispChar = '0';
-	this->x = 10;
-	this->y = 18;
+	this->yy = false;
+	this->dispChar[0] = L'¯';
+	this->dispChar[1] = '\\';
+	this->dispChar[2] = '_';
+	this->dispChar[3] = '(';
+	this->dispChar[4] = L'ツ';
+	this->dispChar[5] = ')';
+	this->dispChar[6] = '_';
+	this->dispChar[7] = '/';
+	this->dispChar[8] = L'¯';
+	this->y = 0;
+	this->x[0] = 0;
+	this->x[1] = 1;
+	this->x[2] = 2;
+	this->x[3] = 3;
+	this->x[4] = 4;
+	this->x[5] = 5;
+	this->x[6] = 6;
+	this->x[7] = 7;
+	this->x[8] = 8;
 	return ;
 }
 
-Player::~Player(void)
+Boss::~Boss(void)
 {
 	return ;
 }
 
-Player::Player(Player const & src)
+Boss::Boss(Boss const & src)
 {
-	this->x = src.x;
 	this->y = src.y;
-	this->dispChar = src.dispChar;
 }
 
-Player & Player::operator=(Player const & rhs)
+Boss & Boss::operator=(Boss const & rhs)
 {
-	this->x = rhs.x;
 	this->y = rhs.y;
-	this->dispChar = rhs.dispChar;
 	return (*this);
 }
 
-void	Player::display(void)
+void	Boss::clean(void)
 {
-	mvaddch(this->y, this->x, this->dispChar);
+	// mvaddch(this->y, this->x, ' ');
+}
+
+void	Boss::drow(void)
+{
+	// mvaddch(this->y, this->x, this->dispChar);
+}
+
+void	Boss::update(void)
+{
+    // if (this->exist == true)
+    // {
+    //     this->y -= 1;
+    // }
+    // if (this->exist == true && this->y < 2)
+    // {
+    //     this->exist = false;
+    // }
 }

@@ -3,22 +3,21 @@
 //                                                        :::      ::::::::   //
 //   main.cpp                                           :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
-//   By: vpalyvod <marvin@42.fr>                    +#+  +:+       +#+        //
+//   By: sperkhun <marvin@42.fr>                    +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2017/11/05 19:16:01 by vpalyvod          #+#    #+#             //
-//   Updated: 2017/11/05 19:16:03 by vpalyvod         ###   ########.fr       //
+//   Created: 2018/06/23 11:37:23 by sperkhun          #+#    #+#             //
+//   Updated: 2018/06/23 11:37:24 by sperkhun         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
+#include <ncurses.h>
+#include "Game.hpp"
+#include <stdlib.h>
 
-#include "game.hpp"
+int		main() {
 
-int main() {
-	int init_status = init();
+	Game	g;
 
-    if(init_status == 0)
-        run();
-
-    close();
-    return 0;
+	g.run();
+	return 0;
 }

@@ -10,36 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BOARD_H
-# define BOARD_H
-# include <iostream>
-# include <cstdlib>
-# include <ncurses.h>
-# include <unistd.h>
-# include "Weapon.hpp"
+#ifndef BOSS_H
+# define BOSS_H
+# include "Game.hpp"
 # include "Player.hpp"
-# include "Enemies.hpp"
-# include <cstdint>
-# include <string>
-# include <curses.h>
-# include <sys/ioctl.h>
 
-class Board {
-
-public:
-
-	Board(void);
-
-	~Board(void);
-
-	void run();
-
-	int		init_status;
-
-	bool	game_over;
-private:
-	WINDOW *	main_win;
-	WINDOW *	game_win;
+class Boss
+{
+	public:
+		Boss();
+		Boss(Boss const & src);
+		~Boss();
+		Boss & operator=(Boss const & rhs);
+		void	clean(void);
+		void	drow(void);
+		void	update(void);
+		int		x[9];
+		int		y;
+		wchar_t	dispChar[9];
+		bool	yy;
 };
 
 #endif
